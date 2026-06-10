@@ -1,0 +1,235 @@
+/* ============================================================
+   CUTTING WITH THE BS — site stylesheet
+   You should not need to touch this file.
+   ============================================================ */
+
+:root {
+  --paper: #f4f2ec;      /* newsprint */
+  --ink: #181612;        /* near-black ink */
+  --faded: #6e695e;      /* secondary ink */
+  --rule: #c9c5ba;       /* hairline rules */
+  --red: #b5311f;        /* editor's red pen — the only accent */
+  --measure: 68ch;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Courier Prime", "Courier New", Courier, monospace;
+  font-size: 16px;
+  line-height: 1.65;
+  padding: 2.5rem 1.25rem 5rem;
+}
+
+.sheet {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+a { color: var(--ink); text-decoration-color: var(--red); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--red); }
+a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+/* ---------- Masthead ---------- */
+
+.masthead { text-align: center; }
+
+.masthead h1 {
+  font-size: clamp(1.7rem, 6.5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.masthead h1 a { text-decoration: none; color: inherit; }
+
+/* The signature: "BS" struck through in red */
+.struck {
+  position: relative;
+  white-space: nowrap;
+}
+.struck::after {
+  content: "";
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  top: 52%;
+  height: 0.09em;
+  background: var(--red);
+  transform: rotate(-2deg);
+}
+
+.tagline {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faded);
+}
+
+.dateline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  margin: 1.4rem 0 2.4rem;
+  padding: 0.35rem 0.2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Smaller masthead used on issue pages */
+.masthead--small h1 { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+.masthead--small .dateline { margin-bottom: 2rem; }
+
+/* ---------- Front page: lead story ---------- */
+
+.kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.lead { margin-bottom: 3rem; }
+
+.lead h2 {
+  font-size: clamp(1.4rem, 4.5vw, 2.1rem);
+  line-height: 1.25;
+  margin: 0.4rem 0 0.7rem;
+}
+
+.lead h2 a { text-decoration: none; }
+.lead h2 a:hover { color: var(--red); }
+
+.deck { color: var(--faded); max-width: var(--measure); }
+
+.readlink {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Archive index ---------- */
+
+.section-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0;
+}
+
+.archive { list-style: none; }
+
+.archive li {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.85rem 0.2rem;
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.2rem 1.2rem;
+  align-items: baseline;
+}
+
+.archive .no { font-size: 0.78rem; color: var(--faded); letter-spacing: 0.06em; }
+.archive .ti { font-weight: 700; }
+.archive .ti a { text-decoration: none; }
+.archive .ti a:hover { color: var(--red); }
+.archive .dk { grid-column: 2; font-size: 0.88rem; color: var(--faded); max-width: var(--measure); }
+
+/* ---------- Subscribe box ---------- */
+
+.subscribe {
+  margin-top: 3rem;
+  border: 2px solid var(--ink);
+  padding: 1.4rem 1.5rem;
+}
+
+.subscribe p { max-width: var(--measure); }
+.subscribe .motto { margin-top: 0.7rem; font-weight: 700; color: var(--red); }
+
+/* ---------- Issue pages ---------- */
+
+.issue-head { margin-bottom: 2.2rem; }
+
+.issue-head .meta {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faded);
+}
+
+.issue-head h2 {
+  font-size: clamp(1.5rem, 5vw, 2.3rem);
+  line-height: 1.22;
+  margin: 0.5rem 0 0.8rem;
+}
+
+.issue-head .deck { font-size: 1.02rem; }
+
+.body-copy { max-width: var(--measure); }
+
+.body-copy p { margin-bottom: 1.2rem; }
+
+.body-copy h3 {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 2.2rem 0 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.3rem;
+}
+
+.body-copy blockquote {
+  border-left: 3px solid var(--red);
+  padding-left: 1.1rem;
+  margin: 1.6rem 0;
+  color: var(--faded);
+}
+
+.body-copy strong { font-weight: 700; }
+.body-copy em { font-style: italic; }
+
+.endmark { color: var(--red); font-weight: 700; }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: 3.5rem;
+  border-top: 2px solid var(--ink);
+  padding-top: 0.8rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: var(--faded);
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 560px) {
+  body { padding-top: 1.6rem; }
+  .archive li { grid-template-columns: 1fr; }
+  .archive .dk { grid-column: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Menu — Cutting with the BS</title>
+<meta name="description" content="What's Cooking in Innovation: a live database of Israeli health and life-science companies.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <h1><a href="index.html">Cutting with the <span class="struck">BS</span></a></h1>
+    <p class="tagline">What American healthcare does, not what it says</p>
+    <div class="dateline">
+      <span>Brett Super</span>
+      <span>Health &amp; life-science innovation</span>
+      <span>Published monthly</span>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Site">
+    <a href="index.html">Front Page</a>
+    <a href="menu.html" aria-current="page">The Menu</a>
+    <a href="archive.html">The Receipts</a>
+  </nav>
+
+  <section>
+    <p class="kicker">Database of Israeli Health &amp; Life-Science Companies</p>
+    <h2 style="font-size:clamp(1.4rem,4.5vw,2.1rem); line-height:1.25; margin:0.4rem 0 0.7rem;">What's Cooking in Innovation</h2>
+    <p class="deck">Every company I have met in my time as a trade officer with TradeIL — a running database of Israeli health and life-science startups, kept current for the investors and corporates deciding what to order next.</p>
+
+    <div class="menu-controls">
+      <input id="menu-search" type="search" placeholder="Search the menu..." aria-label="Search companies">
+      <select id="menu-filter" aria-label="Filter" hidden></select>
+    </div>
+
+    <p class="menu-count" id="menu-count"></p>
+
+    <div class="menu-scroller">
+      <div class="menu-status" id="menu-status">Setting the table...</div>
+      <table class="menu-table" id="menu-table" hidden>
+        <thead id="menu-head"></thead>
+        <tbody id="menu-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <span>© 2026 Brett Super</span>
+    <span><a href="index.html">Cutting with the BS</a></span>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+/* ============================================================
+   ONE THING TO EDIT: paste your published-sheet CSV link below,
+   between the quotes. You get it from Google Sheets via
+   File -> Share -> Publish to web -> choose your list tab +
+   "Comma-separated values (.csv)" -> Publish -> copy the link.
+   It looks like:
+   https://docs.google.com/spreadsheets/d/e/LONG-CODE/pub?gid=...&single=true&output=csv
+   ============================================================ */
+const SHEET_CSV_URL = "PASTE_YOUR_PUBLISHED_CSV_LINK_HERE";
+
+/* ---- No edits needed below this line ---- */
+const statusEl = document.getElementById("menu-status");
+const tableEl  = document.getElementById("menu-table");
+const headEl   = document.getElementById("menu-head");
+const bodyEl   = document.getElementById("menu-body");
+const countEl  = document.getElementById("menu-count");
+const searchEl = document.getElementById("menu-search");
+const filterEl = document.getElementById("menu-filter");
+
+let rows = [];
+let columns = [];
+let filterCol = null;
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function render() {
+  const q = searchEl.value.trim().toLowerCase();
+  const f = filterEl.value;
+  const visible = rows.filter(r => {
+    const matchQ = !q || columns.some(c => String(r[c] ?? "").toLowerCase().includes(q));
+    const matchF = !f || String(r[filterCol] ?? "") === f;
+    return matchQ && matchF;
+  });
+  bodyEl.innerHTML = visible.map(r =>
+    "<tr>" + columns.map(c => {
+      const v = String(r[c] ?? "");
+      const cell = /^https?:\/\//i.test(v)
+        ? '<a target="_blank" rel="noopener" href="' + esc(v) + '">Link</a>'
+        : esc(v);
+      return "<td>" + cell + "</td>";
+    }).join("") + "</tr>"
+  ).join("");
+  countEl.textContent = "[ " + visible.length + " ] companies on the menu";
+}
+
+function init(data) {
+  rows = data.filter(r => Object.values(r).some(v => String(v ?? "").trim() !== ""));
+  columns = Object.keys(rows[0] || {}).filter(c => c && !/^_/.test(c));
+  headEl.innerHTML = "<tr>" + columns.map(c => "<th>" + esc(c) + "</th>").join("") + "</tr>";
+
+  filterCol = columns.find(c => /sector|categor|vertical|focus|field|industry|type/i.test(c)) || null;
+  if (filterCol) {
+    const opts = [...new Set(rows.map(r => String(r[filterCol] ?? "").trim()).filter(Boolean))].sort();
+    if (opts.length > 1 && opts.length <= 40) {
+      filterEl.innerHTML = '<option value="">All ' + esc(filterCol) + 's</option>' +
+        opts.map(o => '<option value="' + esc(o) + '">' + esc(o) + "</option>").join("");
+      filterEl.hidden = false;
+    } else { filterCol = null; }
+  }
+
+  statusEl.hidden = true;
+  tableEl.hidden = false;
+  render();
+}
+
+searchEl.addEventListener("input", render);
+filterEl.addEventListener("change", render);
+
+if (SHEET_CSV_URL.includes("PASTE_YOUR")) {
+  statusEl.textContent = "The menu is not connected yet — the published-sheet link still needs to be pasted into this page. (See the note inside menu.html.)";
+} else {
+  Papa.parse(SHEET_CSV_URL, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: res => {
+      if (res.data && res.data.length) { init(res.data); }
+      else { statusEl.textContent = "The kitchen returned an empty tray — the sheet published, but no rows came through. Check that the right tab was selected in Publish to web."; }
+    },
+    error: () => {
+      statusEl.textContent = "Could not reach the menu. Check that the sheet is published to the web and the link in this page is correct.";
+    }
+  });
+}
+</script>
+</body>
+</html>

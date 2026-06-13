@@ -343,6 +343,46 @@ a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 
 /* ---------- The Menu (live database page) ---------- */
 
+.backlink {
+  display: inline-block;
+  margin-bottom: 1.2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-decoration: none;
+}
+.backlink:hover { color: var(--red); }
+
+.menu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1.2rem 0 0.4rem;
+}
+
+.menu-tags button {
+  font-family: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--thermal);
+  border: 1px solid var(--ink);
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.menu-tags button:hover { color: var(--red); border-color: var(--red); }
+.menu-tags button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--thermal);
+  border-color: var(--ink);
+}
+.menu-tags button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+.menu-table th.col-desc, .menu-table td.col-desc { min-width: 480px; white-space: normal; }
+
 .menu-controls {
   display: flex;
   gap: 0.8rem;

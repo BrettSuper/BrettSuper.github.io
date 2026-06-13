@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Menu — Cutting with the BS</title>
+<title>Full Company List — Cutting Through the BS</title>
 <meta name="description" content="What's Cooking in Innovation: a live database of Israeli health and life-science companies.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +13,10 @@
 <body>
 <div class="sheet">
 
+  <a class="backlink" href="index.html" onclick="if(history.length>1){history.back();return false;}">← Back</a>
+
   <header class="masthead">
-    <h1><a href="index.html">Cutting with the <span class="struck">BS</span></a></h1>
+    <h1><a href="index.html">Cutting Through the <span class="struck">BS</span></a></h1>
     <p class="tagline">What American healthcare does, not what it says</p>
     <div class="dateline">
       <span>Brett Super</span>
@@ -25,18 +27,21 @@
 
   <nav class="tabs" aria-label="Site">
     <a href="index.html">Front Page</a>
-    <a href="menu.html" aria-current="page">The Menu</a>
+    <a href="menu.html" aria-current="page">Full Company List</a>
     <a href="archive.html">The Receipts</a>
   </nav>
 
   <section>
     <p class="kicker">Database of Israeli Health &amp; Life-Science Companies</p>
-    <h2 style="font-size:clamp(1.4rem,4.5vw,2.1rem); line-height:1.25; margin:0.4rem 0 0.7rem;">What's Cooking in Innovation</h2>
-    <p class="deck">Every company I have met in my time as a trade officer with TradeIL — a running database of Israeli health and life-science startups, kept current for the investors and corporates deciding what to order next.</p>
+    <h2 style="font-size:clamp(1.4rem,4.5vw,2.1rem); line-height:1.25; margin:0.4rem 0 0.3rem;">What's Cooking in Innovation</h2>
+    <p style="font-size:0.85rem; letter-spacing:0.06em; text-transform:uppercase; color:#6e695e; margin-bottom:0.8rem;">The full menu — expect new bites monthly</p>
+    <p class="deck">Every company I have met in my time as a trade officer with TradeIL — a running database of Israeli health and life-science startups, kept current for the investors and corporates deciding what to order next. Prefer the spreadsheet itself? <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/15b_UxR56NnEzYyg7M-SV6z0ygSkePHLp1TZDQjFo7Og/edit?gid=513309086#gid=513309086">Open the Google Sheet</a>.</p>
+
+    <!-- Category buttons mirror the sheet's tabs (built from TABS below) -->
+    <div class="menu-tags" id="menu-tags" role="group" aria-label="Categories"></div>
 
     <div class="menu-controls">
-      <input id="menu-search" type="search" placeholder="Search the menu..." aria-label="Search companies">
-      <select id="menu-filter" aria-label="Filter" hidden></select>
+      <input id="menu-search" type="search" placeholder="Search by company, sector, investor..." aria-label="Search companies">
     </div>
 
     <p class="menu-count" id="menu-count"></p>
@@ -52,7 +57,7 @@
 
   <footer class="site-footer">
     <span>© 2026 Brett Super</span>
-    <span><a href="index.html">Cutting with the BS</a></span>
+    <span><a href="index.html">Cutting Through the BS</a></span>
   </footer>
 
 </div>
@@ -60,14 +65,40 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script>
 /* ============================================================
-   ONE THING TO EDIT: paste your published-sheet CSV link below,
-   between the quotes. You get it from Google Sheets via
-   File -> Share -> Publish to web -> choose your list tab +
-   "Comma-separated values (.csv)" -> Publish -> copy the link.
-   It looks like:
-   https://docs.google.com/spreadsheets/d/e/LONG-CODE/pub?gid=...&single=true&output=csv
+   TWO THINGS TO EDIT:
+
+   1) PUB_BASE — your published-sheet link. Get it from Google
+      Sheets: File -> Share -> Publish to web -> "Entire Document"
+      + "Comma-separated values (.csv)" -> Publish -> copy link.
+      Paste the whole thing; everything after /pub is ignored.
+
+   2) TABS — for each category button you want, paste that tab's
+      gid number. Find it by clicking the tab in your normal
+      Google Sheet and copying the number after "#gid=" in the
+      browser address bar. Buttons whose gid still says PASTE
+      simply won't appear, so fill in as many or as few as you
+      like. Delete any line you don't want public. The first
+      filled-in tab loads by default.
    ============================================================ */
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSFzd1FDDtgkgEvMxwaE_8KhB3g_wKxvk7VDzUmDAni8RIfi9ZVlUUPR6KJ0qOz019NbuNlm-LXXp/pub?output=csv";
+const PUB_BASE = "PASTE_PUBLISHED_LINK_HERE";
+
+const TABS = [
+  { name: "Complete List",                            gid: "PASTE" },
+  { name: "New Additions",                            gid: "PASTE" },
+  { name: "BioTech & Therapeutics",                   gid: "PASTE" },
+  { name: "Diagnostics & Imaging",                    gid: "PASTE" },
+  { name: "Digital Health & Software",                gid: "PASTE" },
+  { name: "Healthcare AI",                            gid: "PASTE" },
+  { name: "Life Sciences Tools & Enablement",         gid: "PASTE" },
+  { name: "Medical Devices & Hardware",               gid: "PASTE" },
+  { name: "Pharma & Drug Development",                gid: "PASTE" },
+  { name: "Aging & Longevity",                        gid: "PASTE" },
+  { name: "Cardiovascular & Heart Failure",           gid: "PASTE" },
+  { name: "Genomics & Precision Medicine",            gid: "PASTE" },
+  { name: "Neurological, Mental & Behavioral Health", gid: "PASTE" },
+  { name: "Oncology & Cancer Diagnostics",            gid: "PASTE" },
+  { name: "Women's Health & FemTech",                 gid: "PASTE" }
+];
 
 /* ---- No edits needed below this line ---- */
 const statusEl = document.getElementById("menu-status");
@@ -76,11 +107,12 @@ const headEl   = document.getElementById("menu-head");
 const bodyEl   = document.getElementById("menu-body");
 const countEl  = document.getElementById("menu-count");
 const searchEl = document.getElementById("menu-search");
-const filterEl = document.getElementById("menu-filter");
+const tagsEl   = document.getElementById("menu-tags");
 
-let rows = [];
-let columns = [];
-let filterCol = null;
+let rows = [], columns = [], descCol = null;
+
+const base = PUB_BASE.split("/pub")[0] + "/pub";
+const liveTabs = TABS.filter(t => /^\d+$/.test(String(t.gid).trim()));
 
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -88,62 +120,60 @@ function esc(s) {
 
 function render() {
   const q = searchEl.value.trim().toLowerCase();
-  const f = filterEl.value;
-  const visible = rows.filter(r => {
-    const matchQ = !q || columns.some(c => String(r[c] ?? "").toLowerCase().includes(q));
-    const matchF = !f || String(r[filterCol] ?? "") === f;
-    return matchQ && matchF;
-  });
+  const visible = rows.filter(r =>
+    !q || columns.some(c => String(r[c] ?? "").toLowerCase().includes(q))
+  );
   bodyEl.innerHTML = visible.map(r =>
     "<tr>" + columns.map(c => {
       const v = String(r[c] ?? "");
+      const cls = c === descCol ? ' class="col-desc"' : "";
       const cell = /^https?:\/\//i.test(v)
         ? '<a target="_blank" rel="noopener" href="' + esc(v) + '">Link</a>'
         : esc(v);
-      return "<td>" + cell + "</td>";
+      return "<td" + cls + ">" + cell + "</td>";
     }).join("") + "</tr>"
   ).join("");
   countEl.textContent = "[ " + visible.length + " ] companies on the menu";
 }
 
-function init(data) {
-  rows = data.filter(r => Object.values(r).some(v => String(v ?? "").trim() !== ""));
-  columns = Object.keys(rows[0] || {}).filter(c => c && !/^_/.test(c));
-  headEl.innerHTML = "<tr>" + columns.map(c => "<th>" + esc(c) + "</th>").join("") + "</tr>";
+function loadTab(tab) {
+  statusEl.hidden = false;
+  tableEl.hidden = true;
+  countEl.textContent = "";
+  statusEl.textContent = "Setting the table...";
+  tagsEl.querySelectorAll("button").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.gid === String(tab.gid) ? "true" : "false"));
 
-  filterCol = columns.find(c => /sector|categor|vertical|focus|field|industry|type/i.test(c)) || null;
-  if (filterCol) {
-    const opts = [...new Set(rows.map(r => String(r[filterCol] ?? "").trim()).filter(Boolean))].sort();
-    if (opts.length > 1 && opts.length <= 40) {
-      filterEl.innerHTML = '<option value="">All ' + esc(filterCol) + 's</option>' +
-        opts.map(o => '<option value="' + esc(o) + '">' + esc(o) + "</option>").join("");
-      filterEl.hidden = false;
-    } else { filterCol = null; }
-  }
-
-  statusEl.hidden = true;
-  tableEl.hidden = false;
-  render();
+  Papa.parse(base + "?gid=" + tab.gid + "&single=true&output=csv", {
+    download: true, header: true, skipEmptyLines: true,
+    complete: res => {
+      const data = (res.data || []).filter(r => Object.values(r).some(v => String(v ?? "").trim() !== ""));
+      if (!data.length) { statusEl.textContent = "This section came back empty — check the gid for \"" + tab.name + "\"."; return; }
+      rows = data;
+      columns = Object.keys(rows[0]).filter(c => c && !/^_/.test(c));
+      descCol = columns.find(c => /desc/i.test(c)) || null;
+      headEl.innerHTML = "<tr>" + columns.map(c =>
+        "<th" + (c === descCol ? ' class="col-desc"' : "") + ">" + esc(c) + "</th>").join("") + "</tr>";
+      statusEl.hidden = true;
+      tableEl.hidden = false;
+      render();
+    },
+    error: () => { statusEl.textContent = "Could not reach the list. Check that the sheet is published to the web and the link in this page is correct."; }
+  });
 }
 
 searchEl.addEventListener("input", render);
-filterEl.addEventListener("change", render);
 
-if (SHEET_CSV_URL.includes("PASTE_YOUR")) {
-  statusEl.textContent = "The menu is not connected yet — the published-sheet link still needs to be pasted into this page. (See the note inside menu.html.)";
+if (PUB_BASE.includes("PASTE_PUBLISHED")) {
+  statusEl.textContent = "The list is not connected yet — the published-sheet link still needs to be pasted into this page. (See the note inside menu.html.)";
+} else if (!liveTabs.length) {
+  statusEl.textContent = "The link is connected, but no category gids have been filled in yet. (See the TABS note inside menu.html.)";
 } else {
-  Papa.parse(SHEET_CSV_URL, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    complete: res => {
-      if (res.data && res.data.length) { init(res.data); }
-      else { statusEl.textContent = "The kitchen returned an empty tray — the sheet published, but no rows came through. Check that the right tab was selected in Publish to web."; }
-    },
-    error: () => {
-      statusEl.textContent = "Could not reach the menu. Check that the sheet is published to the web and the link in this page is correct.";
-    }
-  });
+  tagsEl.innerHTML = liveTabs.map(t =>
+    '<button type="button" data-gid="' + esc(t.gid) + '" aria-pressed="false">' + esc(t.name) + "</button>").join("");
+  tagsEl.querySelectorAll("button").forEach((b, i) =>
+    b.addEventListener("click", () => loadTab(liveTabs[i])));
+  loadTab(liveTabs[0]);
 }
 </script>
 </body>

@@ -26,9 +26,9 @@
   </header>
 
   <nav class="tabs" aria-label="Site">
-    <a href="index.html">Front Page</a>
+    <a href="index.html">Home</a>
     <a href="menu.html" aria-current="page">Full Company List</a>
-    <a href="archive.html">The Receipts</a>
+    <a href="archive.html">Past Issues</a>
   </nav>
 
   <section>
@@ -65,20 +65,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script>
 /* ============================================================
-   TWO THINGS TO EDIT:
+   TWO THINGS TO EDIT (already filled in):
 
    1) PUB_BASE — your published-sheet link. Get it from Google
       Sheets: File -> Share -> Publish to web -> "Entire Document"
       + "Comma-separated values (.csv)" -> Publish -> copy link.
-      Paste the whole thing; everything after /pub is ignored.
 
-   2) TABS — for each category button you want, paste that tab's
-      gid number. Find it by clicking the tab in your normal
-      Google Sheet and copying the number after "#gid=" in the
-      browser address bar. Buttons whose gid still says PASTE
-      simply won't appear, so fill in as many or as few as you
-      like. Delete any line you don't want public. The first
-      filled-in tab loads by default.
+   2) TABS — for each category button, paste that tab's gid
+      number (the number after "#gid=" in your sheet's address
+      bar). Buttons whose gid still says PASTE won't appear, so
+      add or remove lines freely. The first filled-in tab loads
+      by default.
    ============================================================ */
 const PUB_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSFzd1FDDtgkgEvMxwaE_8KhB3g_wKxvk7VDzUmDAni8RIfi9ZVlUUPR6KJ0qOz019NbuNlm-LXXp/pub?output=csv";
 const TABS = [
@@ -96,8 +93,13 @@ const TABS = [
   { name: "Genomics & Precision Medicine",            gid: "1888349672" },
   { name: "Neurological, Mental & Behavioral Health", gid: "5636713" },
   { name: "Oncology & Cancer Diagnostics",            gid: "1933612809" },
-  { name: "Women's Health & FemTech",                 gid: "825956460" },
-  { name: "Landing Page",                             gid: "513309086" }
+  { name: "Women's Health & FemTech",                 gid: "825956460" }
+  /* "Landing Page" (gid 513309086) intentionally left out — that
+     tab is freeform text (welcome note, events, your contact
+     info), not a company table, so it renders messily here and
+     would expose your contact details. To add it back anyway,
+     put a comma after the line above and add:
+     { name: "Landing Page", gid: "513309086" }                */
 ];
 
 /* ---- No edits needed below this line ---- */

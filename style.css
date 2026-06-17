@@ -381,7 +381,7 @@ a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 }
 .menu-tags button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 
-.menu-table th.col-desc, .menu-table td.col-desc { min-width: 640px; white-space: normal; }
+.menu-table th.col-desc, .menu-table td.col-desc { min-width: 480px; white-space: normal; }
 
 .menu-controls {
   display: flex;
@@ -443,6 +443,53 @@ a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
   padding: 2rem 0;
   color: var(--faded);
 }
+
+/* ---------- Article pages (bio / mission / long-form) ---------- */
+
+.issue-head { margin-bottom: 2.2rem; }
+
+.issue-head .meta {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.issue-head h2 {
+  font-size: clamp(1.5rem, 5vw, 2.3rem);
+  line-height: 1.22;
+  margin-top: 0.4rem;
+}
+
+.body-copy { max-width: var(--measure); }
+
+/* Body paragraphs: roomy spacing + first-line indent on every one */
+.body-copy p {
+  margin-bottom: 1.8rem;
+  text-indent: 2.5em;
+}
+
+/* The TLDR — centered, larger than the body, no indent */
+.body-copy .deck {
+  text-indent: 0;
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0 auto 2.4rem;
+}
+
+/* Pull quote (used on the mission page) — offset, not indented */
+.body-copy blockquote {
+  border-left: 3px solid var(--red);
+  padding-left: 1.1rem;
+  margin: 1.8rem 0;
+  color: var(--faded);
+}
+.body-copy blockquote p { text-indent: 0; margin-bottom: 0; }
+
+.endmark { color: var(--red); font-weight: 700; }
 
 /* ---------- Issue-page footer nav ---------- */
 

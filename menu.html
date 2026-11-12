@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Full Company List — Cutting Through the BS</title>
+<title>Full Company List — Healthcare Super Serving</title>
 <meta name="description" content="What's Cooking in Innovation: a live database of Israeli health and life-science companies.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,8 @@
   <a class="backlink" href="index.html" onclick="if(history.length>1){history.back();return false;}">← Back</a>
 
   <header class="masthead">
-    <h1><a href="index.html">Cutting Through the <span class="struck">BS</span></a></h1>
+    <h1><a href="index.html">LTV from TLV to US</a></h1>
+    <p class="masthead-jr">Healthcare Super Serving</p>
     <p class="tagline">Innovation is Coming, Let's Find Out What For</p>
     <div class="dateline">
       <span>Brett Super</span>
@@ -26,9 +27,9 @@
   </header>
 
   <nav class="tabs" aria-label="Site">
-    <a href="index.html">Home</a>
+    <a href="index.html">Front Page</a>
     <a href="menu.html" aria-current="page">Full Company List</a>
-    <a href="archive.html">Past Issues</a>
+    <a href="archive.html">The Receipts</a>
   </nav>
 
   <section>
@@ -57,7 +58,7 @@
 
   <footer class="site-footer">
     <span>© 2026 Brett Super</span>
-    <span><a href="index.html">Cutting Through the BS</a></span>
+    <span><a href="index.html">Healthcare Super Serving</a></span>
   </footer>
 
 </div>
@@ -65,17 +66,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script>
 /* ============================================================
-   TWO THINGS TO EDIT (already filled in):
+   TWO THINGS TO EDIT:
 
    1) PUB_BASE — your published-sheet link. Get it from Google
       Sheets: File -> Share -> Publish to web -> "Entire Document"
       + "Comma-separated values (.csv)" -> Publish -> copy link.
+      Paste the whole thing; everything after /pub is ignored.
 
-   2) TABS — for each category button, paste that tab's gid
-      number (the number after "#gid=" in your sheet's address
-      bar). Buttons whose gid still says PASTE won't appear, so
-      add or remove lines freely. The first filled-in tab loads
-      by default.
+   2) TABS — for each category button you want, paste that tab's
+      gid number. Find it by clicking the tab in your normal
+      Google Sheet and copying the number after "#gid=" in the
+      browser address bar. Buttons whose gid still says PASTE
+      simply won't appear, so fill in as many or as few as you
+      like. Delete any line you don't want public. The first
+      filled-in tab loads by default.
    ============================================================ */
 const PUB_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHSFzd1FDDtgkgEvMxwaE_8KhB3g_wKxvk7VDzUmDAni8RIfi9ZVlUUPR6KJ0qOz019NbuNlm-LXXp/pub?output=csv";
 const TABS = [
@@ -93,13 +97,8 @@ const TABS = [
   { name: "Genomics & Precision Medicine",            gid: "1888349672" },
   { name: "Neurological, Mental & Behavioral Health", gid: "5636713" },
   { name: "Oncology & Cancer Diagnostics",            gid: "1933612809" },
-  { name: "Women's Health & FemTech",                 gid: "825956460" }
-  /* "Landing Page" (gid 513309086) intentionally left out — that
-     tab is freeform text (welcome note, events, your contact
-     info), not a company table, so it renders messily here and
-     would expose your contact details. To add it back anyway,
-     put a comma after the line above and add:
-     { name: "Landing Page", gid: "513309086" }                */
+  { name: "Women's Health & FemTech",                 gid: "825956460" },
+  { name: "Landing Page",                             gid: "513309086" }
 ];
 
 /* ---- No edits needed below this line ---- */
